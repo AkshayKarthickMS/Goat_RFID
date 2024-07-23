@@ -29,6 +29,7 @@ def detect_serial_port():
 # Function to read RFID tags in a separate thread
 def read_rfid():
     global latest_rfid_tag
+    ser = None
     try:
         port = detect_serial_port()
         if not port:
