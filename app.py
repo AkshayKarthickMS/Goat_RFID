@@ -16,11 +16,23 @@ app.secret_key = 'supersecretkey'  # Needed for flash messages and sessions
 # Global variable to store the latest RFID tag
 latest_rfid_tag = None
 
+# Function to automatically detect the serial port
+def detect_serial_port():
+    ports = serial.tools.list_ports.comports()
+    for port in ports:
+        if 'usbmodem' in port.device or 'COM' in port.device:  # Adjust this condition based on your platform
+            return port.device
+    return None
+
 # Function to read RFID tags in a separate thread
 def read_rfid():
     global latest_rfid_tag
     try:
-        ser = serial.Serial('/dev/tty.usbserial-130', 9600)  # Adjust this to your Arduino port
+        port = detect_serial_port()
+        if not port:
+            print("No RFID reader found.")
+            return
+        ser = serial.Serial(port, 9600)  # Adjust baud rate if necessary
         while True:
             if ser.in_waiting > 0:
                 tag = ser.readline().decode('utf-8').strip()
