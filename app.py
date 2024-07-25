@@ -818,7 +818,7 @@ latest_rfid_tag = None
 
 def start_rfid_reader():
     # Start the RFID reader executable as a subprocess
-    subprocess.Popen(["dist/rfid_reader.exe"], shell=True)  # Ensure the correct path and executable name
+    subprocess.Popen(["python3", "rfid_reader.py"], shell=False)  # Ensure the correct path and executable name
 
 # Start the RFID reader in a separate thread
 rfid_thread = threading.Thread(target=start_rfid_reader, daemon=True)
